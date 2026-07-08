@@ -30,11 +30,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: leafo/gh-actions-lua@v11
-        with:
-          luaVersion: "luajit-2.1"
-      - uses: leafo/gh-actions-luarocks@v5
       - name: Install busted
-        run: luarocks install busted
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends lua-busted
       - name: Run specs
         run: busted
