@@ -18,5 +18,5 @@ files["spec"] = { std = "+busted" }
 -- lint-clean (unused args, shadowed upvalues). Delete this section
 -- together with game/eyes when you start your own game.
 files["game/eyes"] = {
-  ignore = { "21", "31", "42", "43" },
+  ignore = { "21", "31", "41", "42", "43", "631" },
 }
