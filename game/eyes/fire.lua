@@ -7,48 +7,48 @@ Fire.__index = Fire
 -- Fire-related colors (static shared data)
 Fire.COLORS = {
   fire = {
-    { 1, 0.7, 0, 0.8 },   -- golden orange
-    { 1, 0.4, 0, 0.7 },   -- orange
-    { 1, 0.2, 0, 0.5 },   -- red-orange
+    { 1, 0.7, 0, 0.8 }, -- golden orange
+    { 1, 0.4, 0, 0.7 }, -- orange
+    { 1, 0.2, 0, 0.5 }, -- red-orange
     { 0.7, 0.1, 0, 0.3 }, -- dark red
-    { 0.4, 0, 0, 0 }      -- fade out to transparent
+    { 0.4, 0, 0, 0 }, -- fade out to transparent
   },
   corefire = {
-    { 1, 1, 0.8, 0.9 },   -- bright yellow
+    { 1, 1, 0.8, 0.9 }, -- bright yellow
     { 1, 0.8, 0.2, 0.7 }, -- yellow-orange
-    { 1, 0.6, 0, 0.5 },   -- orange
-    { 1, 0.3, 0, 0.3 },   -- reddish-orange
-    { 0.8, 0.1, 0 }    -- fade out
+    { 1, 0.6, 0, 0.5 }, -- orange
+    { 1, 0.3, 0, 0.3 }, -- reddish-orange
+    { 0.8, 0.1, 0 }, -- fade out
   },
   spark = {
-    { 1, 1, 1, 1 },     -- white
+    { 1, 1, 1, 1 }, -- white
     { 1, 1, 0.6, 0.8 }, -- bright yellow
-    { 1, 0.3, 0, 0.3 },   -- reddish-orange
-    { 1, 0.6, 0.1, 0 }  -- fade to transparent
+    { 1, 0.3, 0, 0.3 }, -- reddish-orange
+    { 1, 0.6, 0.1, 0 }, -- fade to transparent
   },
   smoke = {
-    { 0.5, 0.5, 0.5, 0 },   -- transparent to start
+    { 0.5, 0.5, 0.5, 0 }, -- transparent to start
     { 0.4, 0.4, 0.4, 0.2 }, -- light gray with some transparency
     { 0.3, 0.3, 0.3, 0.1 }, -- mid gray, fading
-    { 0.2, 0.2, 0.2, 0 }    -- dark gray, completely transparent
+    { 0.2, 0.2, 0.2, 0 }, -- dark gray, completely transparent
   },
   reflection = {
-    { 1, 0.95, 0.8, 1.0 },  -- Bright white-yellow
-    { 1, 0.8, 0.3, 0.7 }    -- Fading orange-yellow
-  }
+    { 1, 0.95, 0.8, 1.0 }, -- Bright white-yellow
+    { 1, 0.8, 0.3, 0.7 }, -- Fading orange-yellow
+  },
 }
 
 -- Base configuration templates as class properties
 Fire.BASE_PARTICLE_CONFIG = {
-  direction = -math.pi/2,
+  direction = -math.pi / 2,
   sizeVariation = 0.5,
-  autostart = true
+  autostart = true,
 }
 
 Fire.BASE_FIRE_CONFIG = {
-  spread = math.pi/3,
+  spread = math.pi / 3,
   radial = { min = -10, max = 10 },
-  tangential = { min = -20, max = 20 }
+  tangential = { min = -20, max = 20 },
 }
 
 -- Particle system configuration templates
@@ -77,7 +77,7 @@ Fire.PARTICLE_CONFIGS = {
     acceleration = { minX = -5, minY = -100, maxX = 5, maxY = -130 },
     speed = { min = 20, max = 40 },
     sizes = { 0.4, 0.6, 0.3, 0.1 },
-    spread = math.pi/8,
+    spread = math.pi / 8,
     radial = { min = -2, max = 2 },
     tangential = { min = -5, max = 5 },
     -- Use default base properties for the rest
@@ -90,7 +90,7 @@ Fire.PARTICLE_CONFIGS = {
     acceleration = { minX = -20, minY = -200, maxX = 20, maxY = -300 },
     speed = { min = 50, max = 150 },
     sizes = { 0.6, 0.4, 0.2, 0 },
-    spread = math.pi/2,
+    spread = math.pi / 2,
     radial = { min = -50, max = 50 },
     tangential = { min = -20, max = 20 },
     spin = { min = -2, max = 2 },
@@ -107,14 +107,16 @@ Fire.PARTICLE_CONFIGS = {
     acceleration = { minX = -5, minY = -20, maxX = 5, maxY = -40 },
     speed = { min = 5, max = 15 },
     sizes = { 0.1, 0.6, 1.0, 1.3 },
-    spread = math.pi/2,
+    spread = math.pi / 2,
     radial = { min = -10, max = 10 },
     tangential = { min = -20, max = 20 },
     spin = { min = 0.1, max = 0.8 },
     spinVariation = 1,
-    offset = function() return love.math.random(-5,5), love.math.random(60,90) end,
+    offset = function()
+      return love.math.random(-5, 5), love.math.random(60, 90)
+    end,
     -- Use default base properties for the rest
-  }
+  },
 }
 
 -- Shared resources across all instances
@@ -122,7 +124,7 @@ Fire.resources = {
   particleImage = nil,
   sparkImage = nil,
   initialized = false,
-  refCount = 0
+  refCount = 0,
 }
 
 -- Initialize shared resources if needed
@@ -217,10 +219,10 @@ function Fire.new()
   local self = setmetatable({}, Fire)
 
   -- Instance properties (formerly global state)
-  self.fireSystem = nil    -- Outer erratic flames
-  self.coreSystem = nil    -- Stable inner core
-  self.sparkSystem = nil   -- Occasional bright sparks
-  self.smokeSystem = nil   -- Smoke effect
+  self.fireSystem = nil -- Outer erratic flames
+  self.coreSystem = nil -- Stable inner core
+  self.sparkSystem = nil -- Occasional bright sparks
+  self.smokeSystem = nil -- Smoke effect
 
   -- Timer for spark emission control
   self.sparkTimer = 0
@@ -238,10 +240,18 @@ end
 -- Add cleanup method
 function Fire:destroy()
   -- Release particle systems
-  if self.fireSystem then self.fireSystem:release() end
-  if self.coreSystem then self.coreSystem:release() end
-  if self.sparkSystem then self.sparkSystem:release() end
-  if self.smokeSystem then self.smokeSystem:release() end
+  if self.fireSystem then
+    self.fireSystem:release()
+  end
+  if self.coreSystem then
+    self.coreSystem:release()
+  end
+  if self.sparkSystem then
+    self.sparkSystem:release()
+  end
+  if self.smokeSystem then
+    self.smokeSystem:release()
+  end
 
   -- Release reference to shared resources
   Fire.releaseResources()
@@ -287,7 +297,7 @@ function Fire:createParticleSystem(type, image)
     colors = self.colors[type == "core" and "corefire" or type], -- Map 'core' to 'corefire'
     spin = config.spin,
     spinVariation = config.spinVariation,
-    autostart = config.autostart ~= nil and config.autostart or Fire.BASE_PARTICLE_CONFIG.autostart
+    autostart = config.autostart ~= nil and config.autostart or Fire.BASE_PARTICLE_CONFIG.autostart,
   }
 
   -- Configure and return the particle system
@@ -301,8 +311,12 @@ function Fire:configureParticleSystem(particleSystem, config)
   particleSystem:setParticleLifetime(config.lifetime.min, config.lifetime.max)
   particleSystem:setEmissionRate(config.emissionRate)
   particleSystem:setSizeVariation(config.sizeVariation)
-  particleSystem:setLinearAcceleration(config.acceleration.minX, config.acceleration.minY,
-                                       config.acceleration.maxX, config.acceleration.maxY)
+  particleSystem:setLinearAcceleration(
+    config.acceleration.minX,
+    config.acceleration.minY,
+    config.acceleration.maxX,
+    config.acceleration.maxY
+  )
   particleSystem:setSpeed(config.speed.min, config.speed.max)
   particleSystem:setSizes(unpack(config.sizes))
   particleSystem:setDirection(config.direction)
@@ -347,9 +361,11 @@ end
 ---Register particle systems with the stats overlay
 ---@param overlayStatsModule table Optional stats overlay module for registering particle systems
 function Fire:registerWithStats(overlayStatsModule)
-  if not overlayStatsModule then return end
+  if not overlayStatsModule then
+    return
+  end
 
-  local systems = {self.fireSystem, self.coreSystem, self.sparkSystem, self.smokeSystem}
+  local systems = { self.fireSystem, self.coreSystem, self.sparkSystem, self.smokeSystem }
   for _, system in ipairs(systems) do
     overlayStatsModule.registerParticleSystem(system)
   end
@@ -412,7 +428,7 @@ local globalInstance = Fire.new()
 local fire = setmetatable({
   -- Explicitly defined properties
   Fire = Fire,
-  colors = globalInstance.colors
+  colors = globalInstance.colors,
 }, {
   __index = function(_, key)
     local value = globalInstance[key]
@@ -423,10 +439,12 @@ local fire = setmetatable({
       end
     end
     return value
-  end
+  end,
 })
 
 -- Special case for load since it performs registration
-fire.load = function() globalInstance:registerWithStats(overlayStats) end
+fire.load = function()
+  globalInstance:registerWithStats(overlayStats)
+end
 
 return fire

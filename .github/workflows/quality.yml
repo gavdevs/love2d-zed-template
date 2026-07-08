@@ -1,0 +1,40 @@
+name: Quality 🧹
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  stylua:
+    name: Format check (StyLua)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: JohnnyMorganz/stylua-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          version: latest
+          args: --check game/ spec/
+
+  luacheck:
+    name: Lint (luacheck)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: lunarmodules/luacheck@v1
+
+  busted:
+    name: Test (busted)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: leafo/gh-actions-lua@v11
+        with:
+          luaVersion: "luajit-2.1"
+      - uses: leafo/gh-actions-luarocks@v5
+      - name: Install busted
+        run: luarocks install busted
+      - name: Run specs
+        run: busted

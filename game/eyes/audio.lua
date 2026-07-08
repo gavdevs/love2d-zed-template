@@ -13,8 +13,8 @@ local audio = {
     soundJustFinished = false,
     lastTouchTime = 0,
     touchCooldown = 0.5,
-    lastTouchingState = false
-  }
+    lastTouchingState = false,
+  },
 }
 
 ---Loads all available "aargh" sound effects
@@ -46,7 +46,7 @@ local function loadAmbientFireSound()
 
   return {
     left = leftChannel,
-    right = rightChannel
+    right = rightChannel,
   }
 end
 
@@ -83,10 +83,11 @@ local function updateSoundState(state, sounds, soundState)
   -- 1. We just started touching an eye, OR
   -- 2. A sound just finished and we're still touching an eye
   -- AND in both cases: No sound is playing and cooldown has elapsed
-  if ((state.touching and not wasTouching) or
-      (state.touching and soundState.soundJustFinished)) and
-     not soundState.soundPlaying and cooldownElapsed then
-
+  if
+    ((state.touching and not wasTouching) or (state.touching and soundState.soundJustFinished))
+    and not soundState.soundPlaying
+    and cooldownElapsed
+  then
     soundState.soundPlaying = true
     soundState.soundJustFinished = false -- Reset flag after using it
     soundState.lastTouchTime = currentTime
@@ -111,7 +112,9 @@ end
 ---@param windowWidth number Width of the window
 ---@param windowHeight number Height of the window
 local function updateAudioSystem(ambientFireSound, x, y, windowWidth, windowHeight)
-  if not ambientFireSound then return end
+  if not ambientFireSound then
+    return
+  end
 
   -- Create a balanced stereo effect with smooth crossfade
   local normalizedX = x / windowWidth

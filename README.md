@@ -1,24 +1,22 @@
-# LÖVE Game Development & Automated Build System
+# LÖVE Game Template for Zed
 
-Turn your [LÖVE](https://love2d.org/) game ideas into polished multi-platform releases with this powerful template! Featuring professional IDE integration, automated builds, and everything you need to go from prototype to published game. Built for LÖVE 💕
+Turn your [LÖVE](https://love2d.org/) game ideas into polished multi-platform releases with this template! A [Zed](https://zed.dev/)-native fork of [Oval-Tutu/bootstrap-love2d-project](https://github.com/Oval-Tutu/bootstrap-love2d-project) — same automated build system, with the editor integration rebuilt for Zed and a linting/testing layer added. Built for LÖVE 💕
 
 - 🛑 **Don't fork this repository directly!**
 - 🟢 [**Create a new repository from this template**](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template) for your game.
 
 ## Features
 
-- 🗂️ Organized with [Workspaces](https://code.visualstudio.com/docs/editor/workspaces)
-  - 🌕 Rich Lua language features with [Lua Helper](https://marketplace.visualstudio.com/items?itemName=yinfei.luahelper)
-    - <small>Superior, high-performance, cross-platform compatible Language Server Protocol for Lua. And so much more.</small>
-    - <small>`.luarc.json` is included for people wanting to use [Lua Language Server](https://marketplace.visualstudio.com/items?itemName=sumneko.lua)</small>
-  - 🩷 [Intellisense for the LÖVE API](https://marketplace.visualstudio.com/items?itemName=pixelbyte-studios.pixelbyte-love2d)
-  - 🐛 Debugging with [*Second* Local Lua Debugger](https://marketplace.visualstudio.com/items?itemName=ismoh-games.second-local-lua-debugger-vscode)
-    - <small>A maintained fork of the original [Local Lua Debugger](https://marketplace.visualstudio.com/items?itemName=tomblind.local-lua-debugger-vscode)</small>
-  - 🎑 Deterministic Lua code formatting with [StyLua](https://marketplace.visualstudio.com/items?itemName=JohnnyMorganz.stylua)
-  - 👨‍💻 Consistent coding styles with [Editorconfig](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
-  - ️⛱️ [Shader languages support](https://marketplace.visualstudio.com/items?itemName=slevesque.shader)
-  - 🐙 [GitHub Local Actions](https://marketplace.visualstudio.com/items?itemName=SanjulaGanepola.github-local-actions)
-  - ️👷 Automated builds of the `.love` file from within the IDE
+- ⚡ [Zed](https://zed.dev/)-native project configuration (`.zed/`)
+  - 🌕 Rich Lua language features via the [Lua extension](https://zed.dev/extensions?query=lua) ([LuaLS](https://luals.github.io/))
+    - <small>`.luarc.json` configures LuaJIT, the `love` global, and LuaLS's bundled LÖVE API definitions — autocomplete and hover docs for every `love.*` function out of the box.</small>
+  - 🎑 Deterministic Lua code formatting with [StyLua](https://github.com/JohnnyMorganz/StyLua), on save
+  - 🚨 Linting with [luacheck](https://github.com/lunarmodules/luacheck) (`std = "luajit+love"`)
+  - 🧪 BDD-style testing with [busted](https://lunarmodules.github.io/busted/)
+  - 👨‍💻 Consistent coding styles with [Editorconfig](https://editorconfig.org/)
+  - 🤖 [`AGENTS.md`](AGENTS.md) instructions for the Zed Agent and other AI coding tools
+  - ️👷 Run, debug-run, build, lint, and test as Zed tasks
+- 🧹 Quality workflow on every push: StyLua check, luacheck, and busted specs
 - 📦 GitHub Actions for automated builds - compatible with [act](https://nektosact.com/)
   - 🤖 Android (.aab and .apk)
   - 📱 iOS (.ipa)
@@ -35,11 +33,14 @@ Turn your [LÖVE](https://love2d.org/) game ideas into polished multi-platform r
 
 ### Prerequisites
 
-- [Visual Studio Code](https://code.visualstudio.com/) or [VSCodium](https://vscodium.com/)
+- [Zed](https://zed.dev/) with the [Lua extension](https://zed.dev/extensions?query=lua)
 - [LÖVE 11.5](https://love2d.org/) (*currently only 11.5 is supported*)
   - **`love` should be in your `PATH`**
+- [StyLua](https://github.com/JohnnyMorganz/StyLua) (`cargo install stylua`, or a [release binary](https://github.com/JohnnyMorganz/StyLua/releases))
 - `bash`
 - `7z`
+- [`luacheck`](https://github.com/lunarmodules/luacheck) and [`busted`](https://lunarmodules.github.io/busted/) (*optional locally — CI runs them regardless*)
+  - `luarocks install --local luacheck busted` (needs `lua`, headers, and a C compiler; on Fedora: `sudo dnf install lua lua-devel gcc luarocks`)
 - [`miniserve`](https://github.com/svenstaro/miniserve) (*optional ️for local testing of HTML builds*)
 
 ## Platform Support
@@ -67,9 +68,8 @@ Turn your [LÖVE](https://love2d.org/) game ideas into polished multi-platform r
 
 - **Don't fork this repository directly!**
 - [**Create a new repository from this template**](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template) for your game, then clone that repository.
-- Open the `Workspace.code-workspace` file with [Visual Studio Code](https://code.visualstudio.com/) or [VSCodium](https://vscodium.com/)
-  - You will be prompted that there are recommended extensions.
-    - Click *'Install'*
+- Open the project folder in [Zed](https://zed.dev/) (`zed .`)
+  - Install the **Lua** extension if you haven't already (`zed: extensions` from the command palette).
 - Remove our example *"game"* by:
   - Rename `game/main.template.lua` to `game/main.lua`.
   - Delete `game/eyes` directory.
@@ -82,17 +82,19 @@ Turn your [LÖVE](https://love2d.org/) game ideas into polished multi-platform r
 
 ### Running
 
-- Press <kbd>Ctrl</kbd> + <kbd>F5</kbd> to **Run** the game.
-- Press <kbd>F5</kbd> to **Debug** the game.
-  - In debug mode you can use breakpoints and inspect variables.
-  - This does have some performance impact though.
-  - You can switch to *Release mode* in the `Run and Debug` tab (<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>D</kbd>)
+All project tasks live in [`.zed/tasks.json`](.zed/tasks.json). Open the task picker with `task: spawn` from the command palette (or bind a key — see the comment in that file):
+
+- **Run game** — `love game/`
+- **Run game (debug)** — `love game/ debug`; errors crash with a full traceback instead of LÖVE's error screen
+- **Lint (luacheck)** and **Test (busted)** — the same checks CI runs
+
+Re-run the last task any time with `task: rerun`.
 
 ### Building
 
 Builds a date stamped `.love` file and puts it in the `builds` folder.
 
-- Press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd> to **Build** the game.
+- Spawn the **Build .love package** task.
 
 ### Performance Metrics
 
@@ -150,7 +152,7 @@ For more detailed technical information about development workflows, build confi
 
 ## References
 
-Inspired by and adapted from [LOVE VSCode Game Template](https://github.com/Keyslam/LOVE-VSCode-Game-Template), [LÖVE Actions](https://github.com/love-actions) and [love.js player](https://github.com/2dengine/love.js) from [2dengine](https://2dengine.com/).
+A fork of [Oval-Tutu/bootstrap-love2d-project](https://github.com/Oval-Tutu/bootstrap-love2d-project), which was itself inspired by and adapted from [LOVE VSCode Game Template](https://github.com/Keyslam/LOVE-VSCode-Game-Template), [LÖVE Actions](https://github.com/love-actions) and [love.js player](https://github.com/2dengine/love.js) from [2dengine](https://2dengine.com/).
 
 
 ### Credits

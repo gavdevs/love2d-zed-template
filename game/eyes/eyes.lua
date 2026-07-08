@@ -41,22 +41,22 @@ function Eye.new(id, x, y, size, phaseX, phaseY)
   self.baseY = y
   self.size = size
   self.fade = 0
-  self.floatOffset = {x = 0, y = 0}
-  self.velocity = {x = 0, y = 0}
-  self.attractOffset = {x = 0, y = 0}
+  self.floatOffset = { x = 0, y = 0 }
+  self.velocity = { x = 0, y = 0 }
+  self.attractOffset = { x = 0, y = 0 }
   self.phaseX = phaseX
   self.phaseY = phaseY
   self.reflection = {
     intensity = 0,
     x = 0,
-    y = 0
+    y = 0,
   }
   self.pupilDilation = 0
   self.isTouching = false
 
   -- Initialize pupil tracking properties
-  self.pupilTarget = {x = x, y = y}
-  self.pupilCurrent = {x = x, y = y}
+  self.pupilTarget = { x = x, y = y }
+  self.pupilCurrent = { x = x, y = y }
 
   return self
 end
@@ -65,8 +65,7 @@ end
 ---@return number x The actual X position
 ---@return number y The actual Y position
 function Eye:getPosition()
-  return self.baseX + self.floatOffset.x,
-         self.baseY + self.floatOffset.y
+  return self.baseX + self.floatOffset.x, self.baseY + self.floatOffset.y
 end
 
 ---Sets the base position for the eye
@@ -129,9 +128,7 @@ function Eye:updateAttractionPhysics(dt, attractionPoint, config)
 
     -- Clamp maximum velocity
     local maxVel = config.maxAttractionForce * dt
-    self.velocity.x, self.velocity.y = vector.clamp(
-      self.velocity.x, self.velocity.y, maxVel
-    )
+    self.velocity.x, self.velocity.y = vector.clamp(self.velocity.x, self.velocity.y, maxVel)
   end
 
   -- Update position based on velocity
@@ -170,8 +167,7 @@ end
 ---@param fadeSpeed number Speed at which reflection fades
 ---@param dt number Delta time
 function Eye:updateReflection(targetIntensity, x, y, fadeSpeed, dt)
-  self.reflection.intensity = self.reflection.intensity +
-    (targetIntensity - self.reflection.intensity) * dt * fadeSpeed
+  self.reflection.intensity = self.reflection.intensity + (targetIntensity - self.reflection.intensity) * dt * fadeSpeed
   self.reflection.x = x
   self.reflection.y = y
 end
@@ -181,8 +177,7 @@ end
 ---@param fadeSpeed number Speed at which dilation changes
 ---@param dt number Delta time
 function Eye:updatePupilDilation(targetDilation, fadeSpeed, dt)
-  self.pupilDilation = self.pupilDilation +
-    (targetDilation - self.pupilDilation) * dt * fadeSpeed
+  self.pupilDilation = self.pupilDilation + (targetDilation - self.pupilDilation) * dt * fadeSpeed
 end
 
 ---Updates the tracking position of the pupil with inertia
@@ -196,10 +191,8 @@ function Eye:updatePupilTracking(dt, targetX, targetY, trackingSpeed)
   self.pupilTarget.y = targetY
 
   -- Move current position toward target with inertia
-  self.pupilCurrent.x = self.pupilCurrent.x +
-    (self.pupilTarget.x - self.pupilCurrent.x) * dt * trackingSpeed
-  self.pupilCurrent.y = self.pupilCurrent.y +
-    (self.pupilTarget.y - self.pupilCurrent.y) * dt * trackingSpeed
+  self.pupilCurrent.x = self.pupilCurrent.x + (self.pupilTarget.x - self.pupilCurrent.x) * dt * trackingSpeed
+  self.pupilCurrent.y = self.pupilCurrent.y + (self.pupilTarget.y - self.pupilCurrent.y) * dt * trackingSpeed
 end
 
 -- The public module
@@ -226,34 +219,34 @@ local eyes = {
     amplitudeX = 15,
     amplitudeY = 10,
     -- Fire attraction parameters
-    attractionStrength = 0.08,   -- Reduced from 0.15 for more gradual movement
-    attractionRange = 400,       -- Maximum distance at which attraction has an effect
-    maxAttractionForce = 0.4,    -- Maximum force of attraction per second
-    dampingFactor = 0.85,        -- How quickly attraction velocity decays
+    attractionStrength = 0.08, -- Reduced from 0.15 for more gradual movement
+    attractionRange = 400, -- Maximum distance at which attraction has an effect
+    maxAttractionForce = 0.4, -- Maximum force of attraction per second
+    dampingFactor = 0.85, -- How quickly attraction velocity decays
   },
 
   -- Eye tracking configuration
   tracking = {
-    speed = 15.0,                -- Base speed of eye tracking (higher = faster tracking)
-    touchedSpeedFactor = 0.3,    -- When touched, tracking is this much slower
-    maxTrackingDistance = 0.5,   -- Max percentage of eye size the pupil can move from center
+    speed = 15.0, -- Base speed of eye tracking (higher = faster tracking)
+    touchedSpeedFactor = 0.3, -- When touched, tracking is this much slower
+    maxTrackingDistance = 0.5, -- Max percentage of eye size the pupil can move from center
   },
 
   -- Reflection state for fire effects
   reflection = {
-    fadeSpeed = 3,      -- How quickly reflection fades in/out
+    fadeSpeed = 3, -- How quickly reflection fades in/out
     maxIntensity = 0.9, -- Maximum reflection intensity (increased for visibility)
-    minDistance = 80,   -- Minimum distance for reflection to appear
-    maxDistance = 350,  -- Distance at which reflection is at minimum intensity
-    baseSize = 0.07     -- Base size of reflection as fraction of eye size (smaller)
+    minDistance = 80, -- Minimum distance for reflection to appear
+    maxDistance = 350, -- Distance at which reflection is at minimum intensity
+    baseSize = 0.07, -- Base size of reflection as fraction of eye size (smaller)
   },
 
   -- Pupil dilation state (responds to fire proximity)
   pupilDilation = {
-    fadeSpeed = 2.5,       -- Speed of dilation transitions
-    maxDilation = 0.30,    -- Maximum additional size factor (30% larger)
-    minDistance = 100,     -- Distance at which maximum dilation occurs
-    maxDistance = 400,     -- Distance at which dilation begins
+    fadeSpeed = 2.5, -- Speed of dilation transitions
+    maxDilation = 0.30, -- Maximum additional size factor (30% larger)
+    minDistance = 100, -- Distance at which maximum dilation occurs
+    maxDistance = 400, -- Distance at which dilation begins
   },
 
   -- Blood veins texture
@@ -289,7 +282,7 @@ local function interpolateColor(color1, color2, factor)
   return {
     color1[1] + (color2[1] - color1[1]) * factor,
     color1[2] + (color2[2] - color1[2]) * factor,
-    color1[3] + (color2[3] - color1[3]) * factor
+    color1[3] + (color2[3] - color1[3]) * factor,
   }
 end
 
@@ -323,11 +316,11 @@ local function drawEyeBase(eyeX, eyeY, eyeSize, eyeColor, shadedEyeColor, dirX, 
   local highlightY = eyeY + (dirY * eyeSize * highlightOffsetFactor)
 
   -- Send the values to the shader
-  eyes.eyeShader:send("eyeCenter", {eyeX, eyeY})
-  eyes.eyeShader:send("highlightCenter", {highlightX, highlightY})
+  eyes.eyeShader:send("eyeCenter", { eyeX, eyeY })
+  eyes.eyeShader:send("highlightCenter", { highlightX, highlightY })
   eyes.eyeShader:send("eyeSize", eyeSize)
-  eyes.eyeShader:send("brightColor", {eyeColor[1], eyeColor[2], eyeColor[3], 1.0})
-  eyes.eyeShader:send("shadedColor", {shadedEyeColor[1], shadedEyeColor[2], shadedEyeColor[3], 1.0})
+  eyes.eyeShader:send("brightColor", { eyeColor[1], eyeColor[2], eyeColor[3], 1.0 })
+  eyes.eyeShader:send("shadedColor", { shadedEyeColor[1], shadedEyeColor[2], shadedEyeColor[3], 1.0 })
 
   -- Draw the eye base with shader for gradient effect
   love.graphics.setShader(eyes.eyeShader)
@@ -342,7 +335,9 @@ end
 ---@param eyeSize number Size of the eye
 ---@param fadeValue number 0-1 fade value for the veins
 local function drawBloodVeins(eyeX, eyeY, eyeSize, fadeValue)
-  if not eyes.bloodVeinsTexture or fadeValue <= 0 then return end
+  if not eyes.bloodVeinsTexture or fadeValue <= 0 then
+    return
+  end
 
   -- Save current blend mode
   local prevBlendMode = love.graphics.getBlendMode()
@@ -356,10 +351,13 @@ local function drawBloodVeins(eyeX, eyeY, eyeSize, fadeValue)
   love.graphics.setColor(1, 1, 1, fadeValue)
   love.graphics.draw(
     eyes.bloodVeinsTexture,
-    eyeX, eyeY,
-    0,                     -- rotation (0 means no rotation)
-    scale, scale,          -- scale X and Y
-    256, 256               -- origin point (center of the 512x512 texture)
+    eyeX,
+    eyeY,
+    0, -- rotation (0 means no rotation)
+    scale,
+    scale, -- scale X and Y
+    256,
+    256 -- origin point (center of the 512x512 texture)
   )
 
   -- Restore previous blend mode
@@ -387,7 +385,7 @@ local function calculatePupilPosition(eyeX, eyeY, eyeSize, fadeValue, currentPup
   local maxDistance = eyeSize * eyes.tracking.maxTrackingDistance
 
   -- Calculate tracking position
-  local distance = math.min(math.sqrt(distanceX^2 + distanceY^2), maxDistance)
+  local distance = math.min(math.sqrt(distanceX ^ 2 + distanceY ^ 2), maxDistance)
   local angle = math.atan2(distanceY, distanceX)
 
   -- Use the current position from the eye's tracking system
@@ -420,7 +418,9 @@ end
 ---@param eyeSize number Size of the eye
 ---@param pupilColor table {r,g,b} Color of the pupil
 local function drawIris(irisX, irisY, eyeSize, pupilColor)
-  if not eyes.irisTexture then return end
+  if not eyes.irisTexture then
+    return
+  end
 
   -- Calculate scale for iris texture (about 140% of the eye size)
   local irisScale = (eyeSize * 1.4) / 512
@@ -429,10 +429,13 @@ local function drawIris(irisX, irisY, eyeSize, pupilColor)
   love.graphics.setColor(pupilColor)
   love.graphics.draw(
     eyes.irisTexture,
-    irisX, irisY,
-    0,                -- no rotation
-    irisScale, irisScale,
-    256, 256         -- center of 512x512 texture
+    irisX,
+    irisY,
+    0, -- no rotation
+    irisScale,
+    irisScale,
+    256,
+    256 -- center of 512x512 texture
   )
 end
 
@@ -442,7 +445,9 @@ end
 ---@param eyeSize number Size of the eye
 ---@param dilationFactor number 0-1 dilation factor
 local function drawPupil(pupilX, pupilY, eyeSize, dilationFactor)
-  if not eyes.pupilTexture then return end
+  if not eyes.pupilTexture then
+    return
+  end
 
   -- Calculate base pupil scale with dilation effect
   local basePupilScale = eyeSize * 0.8 / 512
@@ -453,10 +458,13 @@ local function drawPupil(pupilX, pupilY, eyeSize, dilationFactor)
   love.graphics.setColor(1, 1, 1)
   love.graphics.draw(
     eyes.pupilTexture,
-    pupilX, pupilY,
-    0,                -- no rotation
-    dilatedScale, dilatedScale,
-    256, 256         -- center of 512x512 texture
+    pupilX,
+    pupilY,
+    0, -- no rotation
+    dilatedScale,
+    dilatedScale,
+    256,
+    256 -- center of 512x512 texture
   )
 end
 
@@ -470,7 +478,9 @@ local function drawReflection(pupilX, pupilY, eyeSize, reflectionIntensity, fade
   -- Calculate actual reflection intensity - fades out completely when eye is touched
   local actualIntensity = reflectionIntensity * (1.0 - fadeValue)
 
-  if actualIntensity <= 0.01 then return end -- Only draw if visible
+  if actualIntensity <= 0.01 then
+    return
+  end -- Only draw if visible
 
   -- Save current blend mode and line style
   local prevBlendMode = love.graphics.getBlendMode()
@@ -504,17 +514,11 @@ local function drawReflection(pupilX, pupilY, eyeSize, reflectionIntensity, fade
   local coreGlintColor = colorUtils.getColor("reflections", "core")
 
   -- Draw the main glint with anti-aliasing
-  love.graphics.setColor(
-    mainGlintColor[1], mainGlintColor[2], mainGlintColor[3],
-    0.8 * actualIntensity
-  )
+  love.graphics.setColor(mainGlintColor[1], mainGlintColor[2], mainGlintColor[3], 0.8 * actualIntensity)
   love.graphics.circle("fill", glintX, glintY, glintSize)
 
   -- Add a brighter core with anti-aliasing
-  love.graphics.setColor(
-    coreGlintColor[1], coreGlintColor[2], coreGlintColor[3],
-    0.9 * actualIntensity
-  )
+  love.graphics.setColor(coreGlintColor[1], coreGlintColor[2], coreGlintColor[3], 0.9 * actualIntensity)
   love.graphics.circle("fill", glintX, glintY, glintSize * 0.6)
 
   -- Restore previous graphics settings
@@ -569,10 +573,8 @@ local function drawEye(eye, isOnline)
   drawBloodVeins(eyeX, eyeY, eyeSize, fadeValue)
 
   -- Calculate iris and pupil positions using current tracked position
-  local irisX, irisY, pupilX, pupilY = calculatePupilPosition(
-    eyeX, eyeY, eyeSize, fadeValue,
-    eye.pupilCurrent.x, eye.pupilCurrent.y
-  )
+  local irisX, irisY, pupilX, pupilY =
+    calculatePupilPosition(eyeX, eyeY, eyeSize, fadeValue, eye.pupilCurrent.x, eye.pupilCurrent.y)
 
   drawIris(irisX, irisY, eyeSize, pupilColor)
   drawPupil(pupilX, pupilY, eyeSize, dilationFactor)
@@ -597,7 +599,7 @@ end
 ---@param eyeY number Y position of the eye
 ---@return number distance Distance from point to eye
 function eyes.calculateDistanceToEye(pointX, pointY, eyeX, eyeY)
-  return math.sqrt((pointX - eyeX)^2 + (pointY - eyeY)^2)
+  return math.sqrt((pointX - eyeX) ^ 2 + (pointY - eyeY) ^ 2)
 end
 
 ---Calculates intensity value based on distance and configuration
@@ -668,14 +670,16 @@ function eyes.calculateEyeEffects(mousePosition, leftEye, rightEye, reflectionCo
     leftX = leftEyeX,
     leftY = leftEyeY,
     rightX = rightEyeX,
-    rightY = rightEyeY
+    rightY = rightEyeY,
   }
 end
 
 ---Updates the online status by performing a network request
 ---@return boolean isOnline True if the site is online
 local function checkOnlineStatus()
-  if not https then return false end
+  if not https then
+    return false
+  end
 
   local success, result = pcall(function()
     local code, body, headers = https.request("https://oval-tutu.com")
@@ -728,13 +732,23 @@ function eyes.load()
   local leftX, rightX, centerY = calculateEyePositions(windowWidth, windowHeight, eyes.eyeSpacing)
 
   -- Create eyes with their appropriate phases
-  eyes.eyes.left = Eye.new("left", leftX, centerY, eyes.eyeSize,
-                          eyes.floating.phaseLeftX or 0,
-                          eyes.floating.phaseLeftY or math.pi * 0.5)
+  eyes.eyes.left = Eye.new(
+    "left",
+    leftX,
+    centerY,
+    eyes.eyeSize,
+    eyes.floating.phaseLeftX or 0,
+    eyes.floating.phaseLeftY or math.pi * 0.5
+  )
 
-  eyes.eyes.right = Eye.new("right", rightX, centerY, eyes.eyeSize,
-                           eyes.floating.phaseRightX or math.pi * 0.7,
-                           eyes.floating.phaseRightY or math.pi * 0.3)
+  eyes.eyes.right = Eye.new(
+    "right",
+    rightX,
+    centerY,
+    eyes.eyeSize,
+    eyes.floating.phaseRightX or math.pi * 0.7,
+    eyes.floating.phaseRightY or math.pi * 0.3
+  )
 
   -- Initialize the state manager
   eyes.stateManager = StateManager.new(eyes)
@@ -782,7 +796,7 @@ function eyes.update(dt)
 
     -- Limit how far the pupil can move from center
     local maxDistance = eyeSize * eyes.tracking.maxTrackingDistance
-    local distance = math.sqrt(distanceX^2 + distanceY^2)
+    local distance = math.sqrt(distanceX ^ 2 + distanceY ^ 2)
 
     if distance > maxDistance then
       local factor = maxDistance / distance
@@ -816,7 +830,7 @@ function eyes.update(dt)
   audio:update(dt, {
     touching = eyes.stateManager.touching,
     touchingLeft = eyes.eyes.left.isTouching,
-    touchingRight = eyes.eyes.right.isTouching
+    touchingRight = eyes.eyes.right.isTouching,
   }, eyes.x, eyes.y)
 
   -- Update fire module with current mouse position

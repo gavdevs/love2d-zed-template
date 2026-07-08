@@ -1,12 +1,12 @@
 ---@class ParallaxBackground Module for handling parallax background layers with horizontal scrolling
 local background = {
-  layers = {},          -- Will hold all layer data
-  width = 2048,         -- Original width of images
-  height = 1546,        -- Original height of images
-  offset = 0,           -- Current horizontal scroll position
-  scrollSpeed = 100,    -- Base horizontal scroll speed in pixels per second
+  layers = {}, -- Will hold all layer data
+  width = 2048, -- Original width of images
+  height = 1546, -- Original height of images
+  offset = 0, -- Current horizontal scroll position
+  scrollSpeed = 100, -- Base horizontal scroll speed in pixels per second
   scaleMode = "contain", -- "contain" fits the entire image, "cover" fills the screen
-  maxScale = 1.0,        -- Maximum scaling factor (1.0 = 100% of original size)
+  maxScale = 1.0, -- Maximum scaling factor (1.0 = 100% of original size)
 }
 
 -- Initialize, load images, set up layers
@@ -16,24 +16,24 @@ function background:load()
 
   -- Define parallax factors - furthest layer (7) moves slowest, nearest layer (1) moves fastest
   local parallaxFactors = {
-    1.0,  -- layer_01 (closest) - moves at 100% speed
-    1.0,  -- layer_02
-    0.8,  -- layer_03
-    0.6,  -- layer_04
-    0.4,  -- layer_05
-    0.2,  -- layer_06
-    0.1   -- layer_07 (furthest) - moves at 10% speed
+    1.0, -- layer_01 (closest) - moves at 100% speed
+    1.0, -- layer_02
+    0.8, -- layer_03
+    0.6, -- layer_04
+    0.4, -- layer_05
+    0.2, -- layer_06
+    0.1, -- layer_07 (furthest) - moves at 10% speed
   }
 
   -- Define vertical offsets for specific layers (only layer 1 needs adjustment)
   local verticalOffsets = {
     -290, -- layer_01 needs to be elevated by 290px
-    0,    -- layer_02
-    0,    -- layer_03
-    0,    -- layer_04
-    0,    -- layer_05
-    0,    -- layer_06
-    0     -- layer_07
+    0, -- layer_02
+    0, -- layer_03
+    0, -- layer_04
+    0, -- layer_05
+    0, -- layer_06
+    0, -- layer_07
   }
 
   -- Load all 7 layers
@@ -45,7 +45,7 @@ function background:load()
       verticalOffset = verticalOffsets[i],
       horizontalOffset = 0,
       -- For layer 7, we conceptually treat it as double width
-      effectiveWidth = (i == 7) and (self.width * 2) or self.width
+      effectiveWidth = (i == 7) and (self.width * 2) or self.width,
     }
     table.insert(self.layers, layer)
   end
@@ -75,9 +75,9 @@ function background:draw()
   -- Determine scale based on selected scaling mode
   local scale
   if self.scaleMode == "contain" then
-    scale = math.min(scaleX, scaleY)  -- Ensure entire image fits
+    scale = math.min(scaleX, scaleY) -- Ensure entire image fits
   else -- "cover" mode
-    scale = math.max(scaleX, scaleY)  -- Ensure entire screen is covered
+    scale = math.max(scaleX, scaleY) -- Ensure entire screen is covered
   end
 
   -- Apply maximum scale limitation
@@ -110,24 +110,11 @@ function background:draw()
         local repX_pos = math.floor(x + (repX * scaledWidth * 2))
 
         -- Draw the image part (first half of the conceptual doubled width)
-        love.graphics.draw(
-          layer.image,
-          repX_pos,
-          y,
-          0,
-          scale,
-          scale
-        )
+        love.graphics.draw(layer.image, repX_pos, y, 0, scale, scale)
 
         -- Draw the colored rectangle part (second half of the conceptual doubled width)
-        love.graphics.setColor(17/255, 13/255, 18/255) -- #110D12
-        love.graphics.rectangle(
-          "fill",
-          repX_pos + scaledWidth,
-          y,
-          scaledWidth,
-          scaledHeight
-        )
+        love.graphics.setColor(17 / 255, 13 / 255, 18 / 255) -- #110D12
+        love.graphics.rectangle("fill", repX_pos + scaledWidth, y, scaledWidth, scaledHeight)
 
         -- Reset color
         love.graphics.setColor(1, 1, 1)
@@ -140,14 +127,7 @@ function background:draw()
       for repX = 0, repsX - 1 do
         -- Round each repetition position to integer pixels
         local repX_pos = math.floor(x + repX * scaledWidth)
-        love.graphics.draw(
-          layer.image,
-          repX_pos,
-          y,
-          0,
-          scale,
-          scale
-        )
+        love.graphics.draw(layer.image, repX_pos, y, 0, scale, scale)
       end
     end
   end

@@ -8,12 +8,15 @@
   ],
   "diagnostics.globals": [
       "love",
-      "jit"
+      "jit",
+      // busted test framework (spec/)
+      "describe", "it", "setup", "teardown", "before_each", "after_each",
+      "assert", "spy", "stub", "mock", "finally", "pending"
   ],
 
   "workspace.checkThirdParty": false,
   "workspace.ignoreDir": [
-      ".vscode",
+      ".zed",
       "builds",
       "resources",
       "tools"

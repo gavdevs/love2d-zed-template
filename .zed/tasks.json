@@ -1,0 +1,44 @@
+// Project tasks — spawn with `task: spawn` from the command palette,
+// or bind a key, e.g. in ~/.config/zed/keymap.json:
+//   "ctrl-shift-r": ["task::Spawn", { "task_name": "Run game" }]
+[
+  {
+    "label": "Run game",
+    "command": "love",
+    "args": ["game/"],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  {
+    "label": "Run game (debug)",
+    "command": "love",
+    "args": ["game/", "debug"],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  {
+    "label": "Build .love package",
+    "command": "tools/build-love.sh",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  {
+    "label": "Test HTML build",
+    "command": "tools/test-html.sh",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  {
+    "label": "Lint (luacheck)",
+    "command": "luacheck",
+    "args": ["."],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  },
+  {
+    "label": "Test (busted)",
+    "command": "busted",
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  }
+]

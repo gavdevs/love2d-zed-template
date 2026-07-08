@@ -1,0 +1,8 @@
+return {
+  default = {
+    verbose = true,
+    -- Let specs require game modules the same way the game does,
+    -- e.g. require("eyes.utils")
+    lpath = "game/?.lua;game/?/init.lua",
+  },
+}

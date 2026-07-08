@@ -13,8 +13,8 @@ local RESOURCE_PATHS = {
     eye = "eyes/shaders/eye.glsl",
   },
   fonts = {
-    default = {size = 42},
-  }
+    default = { size = 42 },
+  },
 }
 
 -- Fallback shader source for when loading fails

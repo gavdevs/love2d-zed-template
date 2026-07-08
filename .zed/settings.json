@@ -1,0 +1,19 @@
+// Project settings for Zed — https://zed.dev/docs/configuring-zed
+//
+// The Lua language server (LuaLS) is configured via .luarc.json in the
+// repo root; Zed's Lua extension picks it up automatically.
+{
+  "languages": {
+    "Lua": {
+      "tab_size": 2,
+      "format_on_save": "on",
+      "formatter": {
+        "external": {
+          "command": "stylua",
+          "arguments": ["--search-parent-directories", "--stdin-filepath", "{buffer_path}", "-"]
+        }
+      }
+    }
+  },
+  "file_scan_exclusions": ["builds/**"]
+}

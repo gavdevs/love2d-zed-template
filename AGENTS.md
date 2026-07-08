@@ -1,5 +1,6 @@
 <!--
-  Custom instructions for GitHub Copilot when working with this LÖVE 2D project
+  Instructions for AI coding agents (Zed Agent, Claude Code, Copilot, etc.)
+  working with this LÖVE 2D project
 -->
 This is a LÖVE 2D 11.5 project that uses LuaJIT/Lua 5.1.
 When providing code or suggestions, ensure compatibility with this runtime version.

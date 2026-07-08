@@ -13,15 +13,15 @@ colorUtils.palettes = {
   -- Iris colours
   eyes = {
     normal = { iris = { 0.0, 0.5, 0.95 } }, -- Blue
-    online = { iris = { 0.0, 0.8, 0.2 } },  -- Green
-    touched = { iris = { 0.6, 0.0, 0.0 } }    -- Dark red
+    online = { iris = { 0.0, 0.8, 0.2 } }, -- Green
+    touched = { iris = { 0.6, 0.0, 0.0 } }, -- Dark red
   },
 
   -- Eye reflection colors
   reflections = {
-    main = { 1.0, 0.95, 0.8 },     -- Warm yellow
-    core = { 1.0, 1.0, 0.9 }         -- Bright yellow-white
-  }
+    main = { 1.0, 0.95, 0.8 }, -- Warm yellow
+    core = { 1.0, 1.0, 0.9 }, -- Bright yellow-white
+  },
 }
 
 ---Creates a new color object
@@ -31,7 +31,7 @@ colorUtils.palettes = {
 ---@param a? number Alpha component (0-1), defaults to 1
 ---@return table color Color object {r, g, b, a}
 function colorUtils.rgb(r, g, b, a)
-  return {r, g, b, a or 1}
+  return { r, g, b, a or 1 }
 end
 
 ---Converts a color to LÖVE format (array of values)
@@ -40,10 +40,10 @@ end
 function colorUtils.toLoveColor(color)
   -- If the color already has the right format, return it directly
   if type(color[1]) == "number" then
-    return {color[1], color[2], color[3], color[4] or 1}
+    return { color[1], color[2], color[3], color[4] or 1 }
   end
 
-  return {color.r or color[1], color.g or color[2], color.b or color[3], color.a or color[4] or 1}
+  return { color.r or color[1], color.g or color[2], color.b or color[3], color.a or color[4] or 1 }
 end
 
 ---Interpolates between two colors based on a factor (0 to 1)
@@ -72,7 +72,7 @@ function colorUtils.lerp(color1, color2, factor)
     a = color2[4]
   end
 
-  return {r, g, b, a}
+  return { r, g, b, a }
 end
 
 ---Lightens a color by specified amount
@@ -81,7 +81,7 @@ end
 ---@return table Lightened color {r, g, b, a}
 function colorUtils.lighten(color, amount)
   color = colorUtils.toLoveColor(color)
-  local white = {1, 1, 1, color[4] or 1}
+  local white = { 1, 1, 1, color[4] or 1 }
   return colorUtils.lerp(color, white, amount)
 end
 
@@ -91,7 +91,7 @@ end
 ---@return table Darkened color {r, g, b, a}
 function colorUtils.darken(color, amount)
   color = colorUtils.toLoveColor(color)
-  local black = {0, 0, 0, color[4] or 1}
+  local black = { 0, 0, 0, color[4] or 1 }
   return colorUtils.lerp(color, black, amount)
 end
 
@@ -101,7 +101,7 @@ end
 ---@return table Color with adjusted alpha {r, g, b, a}
 function colorUtils.withAlpha(color, alpha)
   color = colorUtils.toLoveColor(color)
-  return {color[1], color[2], color[3], alpha}
+  return { color[1], color[2], color[3], alpha }
 end
 
 ---Gets a color from a palette by name

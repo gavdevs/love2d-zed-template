@@ -10,32 +10,35 @@ Overview of the key files and directories in the template. The main components a
 .
 ├── .github                   GitHub Actions configuration
 ├── .editorconfig             EditorConfig file
-├── .vscode                   Visual Studio Code configuration
-│   ├── extensions.json
-│   ├── launch.json
-│   └── tasks.json
+├── .zed                      Zed editor configuration
+│   ├── settings.json         Project settings (Lua formatting with StyLua)
+│   └── tasks.json            Run, debug-run, build, lint and test tasks
+├── .busted                   busted test runner configuration
+├── .luacheckrc               luacheck linter configuration
+├── .luarc.json               Lua language server (LuaLS) configuration
+├── AGENTS.md                 Instructions for AI coding agents
 ├── builds                    Game builds
 ├── game
 │   ├── conf.lua              LÖVE configuration file
-│   ├── main.lua              main.lau with example "game" - you can delete this
+│   ├── main.lua              main.lua with example "game" - you can delete this
 │   ├── main.template.lua     main.lua template - rename to main.lua
 │   ├── product.env           Settings shared between the game and GitHub Actions
 │   ├── eyes                  Example "game" - you can delete this
 │   ├── lib                   Libraries
 │   └── runtime               Native libraries for HTTPS support
 ├── resources                 Resources use when building the game. Icons, shared libraries, etc.
+├── spec                      busted specs (run with the "Test (busted)" task)
 └── tools                     Tools for building and packaging the game
 ```
 
-### .vscode
+### .zed
 
-The `.vscode` folder contains project specific configuration.
+The `.zed` folder contains project specific configuration for the [Zed](https://zed.dev/) editor.
 
-- `extensions.json`: Contains the list of recommended extensions
-- `launch.json`: Contains the settings for running the game or launching the debugger
-- `tasks.json`: Contains the settings for building the game
+- `settings.json`: Lua formatting (StyLua on save); LuaLS itself is configured by `.luarc.json` in the repo root
+- `tasks.json`: Tasks for running the game (normal and debug), building the `.love` package, linting, and testing
 
-You can configure additional settings and individual preferences via your own `.vscode/settings.json` that is excluded version control.
+Personal preferences belong in your user-level Zed config (`~/.config/zed/settings.json`); the project settings here only pin what the codebase depends on (formatting), and take precedence when the two overlap.
 
 ## Secrets
 

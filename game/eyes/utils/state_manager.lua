@@ -10,9 +10,9 @@ function StateManager.new(eyes)
   self.eyes = eyes
   -- Core states
   self.isOnline = false
-  self.mousePosition = {x = 0, y = 0}
+  self.mousePosition = { x = 0, y = 0 }
   self.touching = false
-  self.shake = {x = 0, y = 0}
+  self.shake = { x = 0, y = 0 }
 
   -- Create sub-managers for logical groupings
   self.motion = self:createMotionManager()
@@ -36,7 +36,7 @@ function StateManager:createMotionManager()
     updateTime = function(self, dt, config)
       self.timeX = (self.timeX + dt * config.speedX) % (2 * math.pi)
       self.timeY = (self.timeY + dt * config.speedY) % (2 * math.pi)
-    end
+    end,
   }
 end
 
@@ -60,7 +60,7 @@ function StateManager:createInteractionManager()
 
       -- Update overall touch state
       return leftEye.isTouching or rightEye.isTouching
-    end
+    end,
   }
 end
 
@@ -82,36 +82,19 @@ function StateManager:createEffectsManager()
       local rightEye = eyes.right
 
       -- Calculate all effects in a single pass
-      local mousePosition = {x = mouseX, y = mouseY}
-      local effects = self.parent.eyes.calculateEyeEffects(
-        mousePosition,
-        leftEye, rightEye,
-        reflectionConfig, dilationConfig
-      )
+      local mousePosition = { x = mouseX, y = mouseY }
+      local effects =
+        self.parent.eyes.calculateEyeEffects(mousePosition, leftEye, rightEye, reflectionConfig, dilationConfig)
 
       -- Update reflections
-      leftEye:updateReflection(
-        effects.leftReflection, effects.leftX, effects.leftY,
-        reflectionConfig.fadeSpeed, dt
-      )
+      leftEye:updateReflection(effects.leftReflection, effects.leftX, effects.leftY, reflectionConfig.fadeSpeed, dt)
 
-      rightEye:updateReflection(
-        effects.rightReflection, effects.rightX, effects.rightY,
-        reflectionConfig.fadeSpeed, dt
-      )
+      rightEye:updateReflection(effects.rightReflection, effects.rightX, effects.rightY, reflectionConfig.fadeSpeed, dt)
 
       -- Update pupil dilations
-      leftEye:updatePupilDilation(
-        effects.leftDilation,
-        dilationConfig.fadeSpeed,
-        dt
-      )
+      leftEye:updatePupilDilation(effects.leftDilation, dilationConfig.fadeSpeed, dt)
 
-      rightEye:updatePupilDilation(
-        effects.rightDilation,
-        dilationConfig.fadeSpeed,
-        dt
-      )
+      rightEye:updatePupilDilation(effects.rightDilation, dilationConfig.fadeSpeed, dt)
     end,
 
     -- Calculate and update shake effect
@@ -125,7 +108,7 @@ function StateManager:createEffectsManager()
       else
         return 0, 0
       end
-    end
+    end,
   }
 end
 
@@ -141,7 +124,7 @@ function StateManager:update(dt)
   self.motion:updateTime(dt, self.eyes.floating)
 
   -- Update eye positions
-  local mousePos = {x = self.mousePosition.x, y = self.mousePosition.y}
+  local mousePos = { x = self.mousePosition.x, y = self.mousePosition.y }
   self.eyes.eyes.left:updateFloating(dt, self.motion.timeX, self.motion.timeY, self.eyes.floating, mousePos)
   self.eyes.eyes.right:updateFloating(dt, self.motion.timeX, self.motion.timeY, self.eyes.floating, mousePos)
 
@@ -166,7 +149,7 @@ function StateManager:update(dt)
     self.eyes.eyeSize,
     self.eyes.reflection,
     self.eyes.pupilDilation,
-    self.eyes.fireModule  -- This is no longer used for calculations
+    self.eyes.fireModule -- This is no longer used for calculations
   )
 
   -- Update shake effect

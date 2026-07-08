@@ -1,13 +1,13 @@
 ---@class Shadows Module for drawing eye shadows
 local shadows = {
   -- Shadow configuration
-  distanceFromBottom = 200,  -- Fixed position from bottom of screen
-  color = {0, 0, 0, 0.1},   -- Shadow color (black with 15% opacity)
-  scaleFactor = 0.7,         -- Base shadow scale relative to eye size
-  scaleDistance = 300,       -- Distance for scaling shadow size
-  minScale = 0.75,           -- Minimum scale factor
-  blur = 8,                  -- Shadow blur amount in pixels
-  yOffset = 0,               -- Will be calculated in update
+  distanceFromBottom = 200, -- Fixed position from bottom of screen
+  color = { 0, 0, 0, 0.1 }, -- Shadow color (black with 15% opacity)
+  scaleFactor = 0.7, -- Base shadow scale relative to eye size
+  scaleDistance = 300, -- Distance for scaling shadow size
+  minScale = 0.75, -- Minimum scale factor
+  blur = 8, -- Shadow blur amount in pixels
+  yOffset = 0, -- Will be calculated in update
 }
 
 -- Private functions
@@ -38,7 +38,7 @@ local function drawShadow(eyeX, eyeY, eyeSize, shadowY)
   love.graphics.setShader()
 
   -- Draw the shadow as a blurred ellipse with natural fading to edges
-  local blurSteps = 10  -- Increased for smoother gradient
+  local blurSteps = 10 -- Increased for smoother gradient
   local maxScale = 1.25 -- Maximum scale factor for outermost blur
 
   -- Draw from innermost (darkest) to outermost (lightest)
@@ -64,9 +64,7 @@ local function drawShadow(eyeX, eyeY, eyeSize, shadowY)
     love.graphics.setColor(shadows.color[1], shadows.color[2], shadows.color[3], opacity)
 
     -- Draw the blurred ellipse layer
-    love.graphics.ellipse("fill", eyeX, shadowY,
-                         shadowWidth * currentScale,
-                         shadowHeight * currentScale)
+    love.graphics.ellipse("fill", eyeX, shadowY, shadowWidth * currentScale, shadowHeight * currentScale)
   end
 
   -- Restore graphics state
